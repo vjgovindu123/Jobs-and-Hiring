@@ -71,7 +71,7 @@ const JobSearch = ({ onSearch }: JobSearchProps) => {
         </div>
         <Button 
           type="submit" 
-          className="h-12 px-6 w-full md:w-auto bg-blue-600 hover:bg-blue-700"
+          className="h-12 px-6 w-full md:w-auto bg-blue-600 hover:bg-blue-700 transition-colors duration-300 transform hover:scale-105 active:scale-95"
           disabled={isSearching}
         >
           {isSearching ? "Searching..." : "Search Jobs"}

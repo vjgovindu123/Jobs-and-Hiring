@@ -94,8 +94,8 @@ export const getJobById = async (id: string): Promise<Job | null> => {
   }
 };
 
-// Mock data for demonstration
-const mockJobs: Job[] = [
+// Mock data for development
+export const mockJobs: Job[] = [
   {
     id: "1",
     title: "Frontend Developer",

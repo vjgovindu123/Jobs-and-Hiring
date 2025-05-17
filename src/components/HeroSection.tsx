@@ -35,9 +35,8 @@ const HeroSection = () => {
       if (query.keyword) searchParams.set('keyword', query.keyword);
       if (query.location) searchParams.set('location', query.location);
       
-      // Navigate to search results page (in a real app, this would be implemented)
-      // navigate(`/jobs?${searchParams.toString()}`);
-      console.log(`Would navigate to: /jobs?${searchParams.toString()}`);
+      // Navigate to search results page
+      navigate(`/jobs?${searchParams.toString()}`);
       
     } catch (error) {
       console.error('Error performing search:', error);
