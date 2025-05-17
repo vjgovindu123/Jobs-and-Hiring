@@ -3,36 +3,49 @@ import { Button } from '@/components/ui/button';
 import JobSearch from './JobSearch';
 import { ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { searchJobs, JobSearchQuery } from '@/services/jobApi';
+import { JobSearchQuery } from '@/services/jobApi';
 import { useState } from 'react';
+import { searchJobsFromBackend } from '@/services/backendApi';
+import { useToast } from "@/hooks/use-toast";
 
 const HeroSection = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
   const handleSearch = async (query: JobSearchQuery) => {
     setIsLoading(true);
     try {
       console.log('Search query:', query);
-      // In a real app, you would:
-      // 1. Store the search results in a global state or context
-      // 2. Navigate to a search results page
-      const results = await searchJobs(query);
+      
+      // Use the backend API service
+      const results = await searchJobsFromBackend(query);
       console.log('Search results:', results);
       
-      // For now, just simulate navigation to a search results page
-      // with query parameters
+      // If no results found, show a toast
+      if (results.length === 0) {
+        toast({
+          title: "No matching jobs found",
+          description: "Try adjusting your search criteria for better results.",
+        });
+      }
+      
+      // Prepare search params for URL
       const searchParams = new URLSearchParams();
       if (query.keyword) searchParams.set('keyword', query.keyword);
       if (query.location) searchParams.set('location', query.location);
       
-      // Navigate to search results page (this would be implemented in a real app)
+      // Navigate to search results page (in a real app, this would be implemented)
       // navigate(`/jobs?${searchParams.toString()}`);
-      
-      // For demo purposes, just log that we would navigate
       console.log(`Would navigate to: /jobs?${searchParams.toString()}`);
+      
     } catch (error) {
       console.error('Error performing search:', error);
+      toast({
+        title: "Search Error",
+        description: "An unexpected error occurred during your search.",
+        variant: "destructive",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -54,11 +67,18 @@ const HeroSection = () => {
           </div>
 
           <div className="mt-10 flex flex-wrap justify-center gap-4 animate-slide-up" style={{ animationDelay: '0.3s' }}>
-            <Button variant="outline" className="text-white border-white hover:bg-white hover:text-blue-800">
+            <Button 
+              variant="outline" 
+              className="text-white border-white hover:bg-white hover:text-blue-800 w-full sm:w-auto"
+              onClick={() => navigate('/profile')}
+            >
               For Job Seekers
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
-            <Button className="bg-teal-500 hover:bg-teal-600 text-white">
+            <Button 
+              className="bg-teal-500 hover:bg-teal-600 text-white w-full sm:w-auto"
+              onClick={() => navigate('/employer')}
+            >
               For Employers
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
