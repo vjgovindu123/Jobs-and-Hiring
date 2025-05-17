@@ -2,11 +2,40 @@
 import { Button } from '@/components/ui/button';
 import JobSearch from './JobSearch';
 import { ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { searchJobs, JobSearchQuery } from '@/services/jobApi';
+import { useState } from 'react';
 
 const HeroSection = () => {
-  const handleSearch = (query: { keyword: string; location: string }) => {
-    console.log('Search query:', query);
-    // In a real app, we would navigate to search results page with these parameters
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSearch = async (query: JobSearchQuery) => {
+    setIsLoading(true);
+    try {
+      console.log('Search query:', query);
+      // In a real app, you would:
+      // 1. Store the search results in a global state or context
+      // 2. Navigate to a search results page
+      const results = await searchJobs(query);
+      console.log('Search results:', results);
+      
+      // For now, just simulate navigation to a search results page
+      // with query parameters
+      const searchParams = new URLSearchParams();
+      if (query.keyword) searchParams.set('keyword', query.keyword);
+      if (query.location) searchParams.set('location', query.location);
+      
+      // Navigate to search results page (this would be implemented in a real app)
+      // navigate(`/jobs?${searchParams.toString()}`);
+      
+      // For demo purposes, just log that we would navigate
+      console.log(`Would navigate to: /jobs?${searchParams.toString()}`);
+    } catch (error) {
+      console.error('Error performing search:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
